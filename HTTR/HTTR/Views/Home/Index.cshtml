@@ -1,0 +1,46 @@
+﻿@model List<HTTR.Models.Player>
+@using HTTR.Models
+
+@{ 
+    ViewBag.Title = "Redskins Scorecard 2017";
+}
+
+<div class="row">
+    
+    <h2><img src="@Links.Content.Images.logo_png" style="width:50px;" /> Redskins Scorecard</h2>
+</div>
+
+<div>
+    Connections: 
+    <span id="hitCounter"></span>
+</div>
+
+@foreach (var PositionPlayers in Roster.Players.OrderBy(x=>x.Position).GroupBy(x => x.Position).ToList())
+{
+    <hr/>
+   
+    <div class="row">
+        <div class="col-xs-6 col-sm-3">
+            <h3>@PositionPlayers.Key.ToString()</h3>
+        </div>
+        @foreach(Player Player in PositionPlayers)
+        {
+        <div class="col-xs-6 col-sm-3">
+            <h4>@Player.Name</h4>
+            <img src="@Player.Image" style="width:100px"/>
+            <h5>Rating: <span id="@Player.Id">@Player.Rating</span></h5>
+            <button class="btn-default thumbsUp" id="@Player.Id"><span class="glyphicon glyphicon-thumbs-up "/></button>
+            <button class="btn-default thumbsDown" id="@Player.Id"><span class="glyphicon glyphicon-thumbs-down"/></button>
+        </div>
+        }
+    </div>
+}
+
+@section scripts {
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.1.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/httr.js"></script>
+
+}
